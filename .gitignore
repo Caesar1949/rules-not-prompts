@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcscmblueprint
+DerivedData/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# 本地草稿 / 临时
+*.tmp
+*.bak
+tmp/
+scratch/
