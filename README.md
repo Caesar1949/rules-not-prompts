@@ -1,6 +1,6 @@
 # rules-not-prompts
 
-**I can't write Swift. I shipped a 62,299-line iOS app with AI in a year.**
+**I can't write Swift. I've shipped three apps — two on iOS, one on HarmonyOS — entirely with AI.**
 
 Not by learning Swift. By writing the AI a set of rules it has to read before every single change.
 
@@ -11,7 +11,7 @@ Path-activated     — specialty rules load only when you touch a matching file.
 A casebook         — the real accident behind every single rule.
 ```
 
-The app won't be open source. This will be.
+The apps won't be open source. This will be.
 
 **中文 → [README.zh-CN.md](README.zh-CN.md)**
 
@@ -31,7 +31,25 @@ The difference is **verifiability**. A good rule can be checked:
 
 A rule that fails all three is just prose the agent reads and forgets.
 
-Every rule in this repo comes with the incident that produced it. That's the whole point — [read the casebook](docs/CASEBOOK.md) and you'll see what a bad rule costs.
+Every rule in this repo comes with the incident that produced it — [read the casebook](docs/CASEBOOK.md) and you'll see what a bad rule costs.
+
+---
+
+## Why these rules and not mine
+
+This is the part that matters most.
+
+The rules here weren't invented. They were **independently rediscovered in three separate projects** — two iOS apps and one HarmonyOS app — built at different times, in different languages, with different code styles.
+
+The same failure modes kept showing up:
+
+- a component refactor that migrated one call site and forgot the other (all three projects)
+- error text used to make a business decision — broke the moment the app ran in another language
+- "compiles fine, passes tests, silently broken on device" (three different flavors: API version, runtime isolation, binary metadata)
+
+One project tells you it's a habit. Three projects in two languages tell you it's **structural**.
+
+→ [Read the cross-project analysis](docs/CROSS-PROJECT.md) — 12 rules that converged, with the evidence from each project.
 
 ---
 
@@ -66,11 +84,13 @@ paths:
 ---
 ```
 
-Swift rules load when you edit a Swift file. Dependency rules load when you edit the project file. Nothing else sits in context.
+Swift rules load when you edit a Swift file. ArkTS rules load when you edit an `.ets` file. Nothing else sits in context.
 
 Always-on rules dilute each other. An agent reading 300 lines of rules will actually follow the first few.
 
 **One trap worth knowing**: every `paths` entry is a file glob that must match at least one real file. Write a symbol name or a deleted filename and the rule **never activates — with no error**.
+
+**A measured cost of getting this wrong**: in one of the source projects, long cross-platform docs living in `.claude/rules/` (no `paths` → greedy loading) consumed **80.5% of the startup context** — 70,148 characters. Moving them to an on-demand folder fixed it.
 
 ---
 
@@ -105,16 +125,18 @@ rules-not-prompts/
 ├── CLAUDE.md                    one-line import pointer
 ├── .claude/
 │   └── rules/
-│       ├── swift.md             activates on **/*.swift
-│       ├── frontend.md          activates on your UI source dir
-│       ├── security.md          activates on source + test dirs
-│       └── dependencies.md      activates on your project file
+│       ├── swift.md             Swift language rules
+│       ├── frontend.md          SwiftUI view & state rules
+│       ├── arkts.md             ArkTS / ArkUI rules (HarmonyOS)
+│       ├── i18n.md              localization rules (any platform)
+│       ├── security.md          credentials & secrets
+│       └── dependencies.md      dependencies & project files
 ├── docs/
 │   ├── RULES.md                 numbering, sources, rule lifecycle
 │   ├── ADAPTING.md              switching to TypeScript / Python / Web
-│   └── CASEBOOK.md              8 real accidents
-└── promo/
-    └── content-calendar-30d.md  30-day content plan
+│   ├── CROSS-PROJECT.md         12 rules that converged across 3 projects
+│   └── CASEBOOK.md              13 real accidents
+└── LICENSE                      MIT
 ```
 
 ---
@@ -138,7 +160,7 @@ Full numbering and lifecycle: [docs/RULES.md](docs/RULES.md). The accident behin
 
 ## Cross-stack
 
-The skeleton is language-agnostic. The four files in `rules/` are Swift/iOS examples — rewrite them per [docs/ADAPTING.md](docs/ADAPTING.md), which includes ready-to-adapt versions for TypeScript/React, Python, and generic build files.
+The skeleton is language-agnostic. The shipped rules cover **Swift/SwiftUI** and **ArkTS/ArkUI**; the i18n rules apply to any platform. Rewrite or add per [docs/ADAPTING.md](docs/ADAPTING.md), which includes ready-to-adapt versions for TypeScript/React and Python.
 
 | Tool | Reads |
 |---|---|
@@ -155,4 +177,4 @@ One request: if a rule here stops a real bug for you, open an issue and tell me.
 
 ---
 
-*Extracted from a real one-person iOS project, then anonymized. At extraction: 1,111 commits / 333 Swift files / 62,299 lines / 96 test files / 0 third-party dependencies.*
+*Extracted from three real one-person projects, then anonymized. At extraction: 1,111 commits / 333 Swift files / 62,299 lines / 96 test files / 0 third-party dependencies in the largest one; a shipped HarmonyOS app and a second iOS app alongside it.*

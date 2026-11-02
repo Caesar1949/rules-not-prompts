@@ -25,7 +25,13 @@
 | 目录结构 | 真实目录，不要写计划中的目录 |
 | `.claude/rules/swift.md` | 换成 `<语言>.md`（TypeScript / Python / Kotlin / Rust…） |
 | `.claude/rules/frontend.md` | 换成你的 UI 层规则（Web / Compose / SwiftUI…） |
+| `.claude/rules/arkts.md` | 只有做 HarmonyOS 才需要；不用可删 |
+| `.claude/rules/i18n.md` | **任何多语言项目都保留**，它与语言无关 |
 | `.claude/rules/dependencies.md` | 换成你的工程文件路径（`package.json` / `pyproject.toml` / `build.gradle`） |
+
+> **`arkts.md` 是可选的。** 它只在 HarmonyOS 项目里有意义——Swift / Web 项目直接删掉这个文件即可，不要留着当参考。
+>
+> **`i18n.md` 是通用的。** 它讲的是「文案与语言变体」这件事，与具体技术栈无关，任何要出多语言版本的项目都该保留。 |
 
 ---
 
@@ -62,7 +68,17 @@
 - 类型标注必须覆盖公共函数
 - 同步 IO 不要混进 async 路径
 
-### 3.3 通用工程文件
+### 3.3 HarmonyOS / ArkTS
+
+`.claude/rules/arkts.md` 已经写好，直接可用。核心要点：
+
+- ArkTS 是 TypeScript 的**受限子集**，不是 TypeScript——`unknown` 中转、索引访问、无类型对象字面量都会被 linter 拦下
+- `ClickEvent` 没有 `stopPropagation`，嵌套可点元素必须改成 `Stack` 里的同级兄弟
+- 可反复打开的组件禁止在 `aboutToAppear` 里 `new` 订阅对象
+- DI 容器只创建不初始化，单例的 `initialize()` 必须由页面显式调
+- 废弃 API 清单写在规则文件里，不要每次重新查
+
+### 3.4 通用工程文件
 
 `rules/dependencies.md`（paths 换成你的构建文件）：
 
