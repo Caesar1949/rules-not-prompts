@@ -177,4 +177,4 @@ One request: if a rule here stops a real bug for you, open an issue and tell me.
 
 ---
 
-*Extracted from three real one-person projects, then anonymized. At extraction: 1,111 commits / 333 Swift files / 62,299 lines / 96 test files / 0 third-party dependencies in the largest one; a shipped HarmonyOS app and a second iOS app alongside it.*
+*Extracted from three real one-person projects, then anonymized. Together they are about 120,000 lines: two iOS apps in Swift and one shipped HarmonyOS app in ArkTS. The largest one also has 1,111 commits, 96 test files, and zero third-party dependencies.*
