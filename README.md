@@ -1,6 +1,6 @@
 # rules-not-prompts
 
-**I can't write Swift. I've shipped three apps — two on iOS, one on HarmonyOS — entirely with AI.**
+**I can't write Swift. I've built three products with AI: two iOS apps, and a collection app whose HarmonyOS build is live. Its Android and iOS builds are still in progress.**
 
 Not by learning Swift. By writing the AI a set of rules it has to read before every single change.
 
@@ -47,7 +47,7 @@ The same failure modes kept showing up:
 - error text used to make a business decision — broke the moment the app ran in another language
 - "compiles fine, passes tests, silently broken on device" (three different flavors: API version, runtime isolation, binary metadata)
 
-One project tells you it's a habit. Three projects in two languages tell you it's **structural**.
+One project tells you it's a habit. Three projects, in Swift and ArkTS, tell you it's **structural**. The collection app also has an Android client in Kotlin. That client is not part of the evidence for these 12 rules.
 
 → [Read the cross-project analysis](docs/CROSS-PROJECT.md) — 12 rules that converged, with the evidence from each project.
 
